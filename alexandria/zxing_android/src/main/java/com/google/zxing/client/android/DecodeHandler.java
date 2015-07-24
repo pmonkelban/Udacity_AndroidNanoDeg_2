@@ -17,6 +17,12 @@
 package com.google.zxing.client.android;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
+
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -24,12 +30,6 @@ import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -53,15 +53,31 @@ final class DecodeHandler extends Handler {
     if (!running) {
       return;
     }
-    switch (message.what) {
-      case R.id.decode:
-        decode((byte[]) message.obj, message.arg1, message.arg2);
-        break;
-      case R.id.quit:
-        running = false;
-        Looper.myLooper().quit();
-        break;
+
+    /*
+    * Android Studio can't handle references to R in switch statements inside a library.
+    * Replaced switch with equivalent if-then-else block.
+    */
+
+    if (message.what == R.id.decode)  {
+      decode((byte[]) message.obj, message.arg1, message.arg2);
+
+    } else if (message.what == R.id.quit)  {
+      running = false;
+      Looper.myLooper().quit();
+
     }
+
+//    switch (message.what) {
+//      case R.id.decode:
+//        decode((byte[]) message.obj, message.arg1, message.arg2);
+//        break;
+//      case R.id.quit:
+//        running = false;
+//        Looper.myLooper().quit();
+//        break;
+//    }
+
   }
 
   /**

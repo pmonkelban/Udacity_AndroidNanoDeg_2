@@ -1,7 +1,6 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.client.android.Intents;
 
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
-
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
@@ -69,12 +69,12 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
             @Override
             public void afterTextChanged(Editable s) {
-                String ean =s.toString();
+                String ean = s.toString();
                 //catch isbn10 numbers
-                if(ean.length()==10 && !ean.startsWith("978")){
-                    ean="978"+ean;
+                if (ean.length() == 10 && !ean.startsWith("978")) {
+                    ean = "978" + ean;
                 }
-                if(ean.length()<13){
+                if (ean.length() < 13) {
                     clearFields();
                     return;
                 }
@@ -96,13 +96,17 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                 // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
                 // are using an external app.
                 //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
 
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+//                Context context = getActivity();
+//                CharSequence text = "This button should let you scan a book for its barcode!";
+//                int duration = Toast.LENGTH_SHORT;
+//
+//                Toast toast = Toast.makeText(context, text, duration);
+//                toast.show();
 
+                Intent intent = new Intent(Intents.Scan.ACTION);
+                intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+                startActivityForResult(intent, 0);
             }
         });
 
@@ -130,6 +134,31 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 0)  {
+            if ((resultCode == Activity.RESULT_CANCELED) || (resultCode == -1000))  {
+                Toast.makeText(getActivity(), "Nothing Captured", Toast.LENGTH_SHORT).show();
+            } else  {
+
+                Bundle bundle = data.getExtras();
+
+                String upc_ean_extension = bundle.getString("SCAN_RESULT_UPC_EAN_EXTENSION");
+                String result = bundle.getString("SCAN_RESULT");
+                int orientation = bundle.getInt("SCAN_RESULT_ORIENTATION");
+                String format = bundle.getString("SCAN_RESULT_FORMAT");
+
+                for (String key : bundle.keySet())  {
+                    Object value = bundle.get(key);
+                    Log.d(TAG, String.format("%s %s (%s)", key, value.toString(), value.getClass().getName()));
+                }
+
+                ean.setText(result);
+            }
+        }
     }
 
     private void restartLoader(){
