@@ -11,4 +11,11 @@
 8.  Copy the zxing/android-core/target/android-core-3.2.1-SNAPSHOT.jar file to the zxing_android/libs directory.  This .jar file contains the CameraConfigurationUtils class that will otherwise be missing.
 9.  Open the zxing_android library's Module Settings, and add the android-core jar file to the Dependencies tab.
 10. Test the module by running com.google.zxing.client.android.CaptureActivity
+11. open the app's Module Settings, and add the zxing_android module as a dependency.
+12. Edit the zxing_android project's build.gradle file,
+    - Change the line "apply plugin: 'com.android.application'" to "apply plugin: 'com.android.library'"
+    This fixes the erorr message "Error: Dependency alexandria:zxing_android:unspecified on project app resolves to an APK archive which is not supported as a compilation dependency..."
+    - Remove the line "applicationId "com.google.zxing.client.android"
+13. Go through the zxing_android library and replace all switch blocks that use R with the equivalent if-then-else blocks.
+14. Remove android:icon, android:logo, and intent-filter MAIN/LAUNCHER from zxing_android/AndroidManifest.xml
 
