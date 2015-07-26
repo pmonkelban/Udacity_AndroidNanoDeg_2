@@ -28,3 +28,7 @@ from two fragments would appear on top of each other, etc.  Fixed so that the Li
     - Remove the line "applicationId "com.google.zxing.client.android"
 13. Go through the zxing_android library and replace all switch blocks that use R with the equivalent if-then-else blocks.
 14. Remove android:icon, android:logo, and intent-filter MAIN/LAUNCHER from zxing_android/AndroidManifest.xml
+
+*** To enable layout mirroring
+http://android-developers.blogspot.com/2013/03/native-rtl-support-in-android-42.html
+
