@@ -4,17 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import it.jaschke.alexandria.api.Callback;
@@ -22,10 +22,15 @@ import it.jaschke.alexandria.api.Callback;
 
 public class MainActivity extends ActionBarActivity implements NavigationDrawerFragment.NavigationDrawerCallbacks, Callback {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment navigationDrawerFragment;
+
+    private int mBookFragmentId;
+
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -58,6 +63,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         // Set up the drawer.
         navigationDrawerFragment.setUp(R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        mBookFragmentId = R.id.container;
+        if(findViewById(R.id.right_container) != null){
+            mBookFragmentId = R.id.right_container;
+        }
     }
 
     @Override
@@ -80,9 +90,14 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
         }
 
+//        Log.d(TAG, "Add to BackStack - " + title);
+
+        // Clear the back stack
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
         fragmentManager.beginTransaction()
                 .replace(R.id.container, nextFragment)
-                .addToBackStack((String) title)
+//                .addToBackStack((String) title)
                 .commit();
     }
 
@@ -134,20 +149,34 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     public void onItemSelected(String ean) {
+
+        Log.d(TAG, "onItemSelected() ean=" + ean);
+
         Bundle args = new Bundle();
         args.putString(BookDetail.EAN_KEY, ean);
 
         BookDetail fragment = new BookDetail();
         fragment.setArguments(args);
 
-        int id = R.id.container;
-        if(findViewById(R.id.right_container) != null){
-            id = R.id.right_container;
+//        Log.d(TAG, "Add to BackStack. Book Detail");
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction = transaction.replace(mBookFragmentId, fragment);
+
+        /*
+        * If we're in tablet mode, then we show the book details in the right panel.
+        * Otherwise, we'll open a new page to show the book's detail, and we'll
+        * add the current page to the back stack.
+        */
+        if (!IS_TABLET)  {
+
+            // Clear the back stack
+            getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+            transaction = transaction.addToBackStack("Home Page");
         }
-        getSupportFragmentManager().beginTransaction()
-                .replace(id, fragment)
-                .addToBackStack("Book Detail")
-                .commit();
+
+        transaction.commit();
 
     }
 
@@ -160,23 +189,30 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         }
     }
 
-    public void goBack(View view){
-        getSupportFragmentManager().popBackStack();
-    }
+//    public void goBack(View view){
+//
+//        Log.d(TAG, "goBack()");
+//
+//        getSupportFragmentManager().popBackStack();
+//    }
 
     private boolean isTablet() {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+//        return (getApplicationContext().getResources().getConfiguration().screenLayout
+//                & Configuration.SCREENLAYOUT_SIZE_MASK)
+//                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+
+        return true;
     }
 
     @Override
     public void onBackPressed() {
-        if(getSupportFragmentManager().getBackStackEntryCount()<2){
+
+        Log.d(TAG, "onBackPressed()");
+
+        if(getSupportFragmentManager().getBackStackEntryCount()<1){
             finish();
         }
         super.onBackPressed();
     }
-
 
 }

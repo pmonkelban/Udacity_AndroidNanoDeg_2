@@ -2,10 +2,14 @@ package it.jaschke.alexandria.services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -57,11 +61,15 @@ public class BookService extends IntentService {
     }
 
     /**
-     * Handle action Foo in the provided background thread with the provided
+     * Handle action deleteBook in the provided background thread with the provided
      * parameters.
      */
     private void deleteBook(String ean) {
-        if(ean!=null) {
+
+        /**
+         * Only attempt to delete the book if ean is not null and not empty.
+         */
+        if((ean!=null) && !TextUtils.isEmpty(ean)) {
             getContentResolver().delete(AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)), null, null);
         }
     }
@@ -130,6 +138,21 @@ public class BookService extends IntentService {
             bookJsonString = buffer.toString();
         } catch (Exception e) {
             Log.e(LOG_TAG, "Error ", e);
+
+            /*
+            * Test to see if we have a network connection.
+            * If there is no network connection, display a Toast.
+            */
+            if (!isNetworkAvailable(getApplicationContext()))  {
+
+                Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+                messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.no_network));
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+
+                return;
+
+            }
+
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -142,6 +165,19 @@ public class BookService extends IntentService {
                 }
             }
 
+        }
+
+        /*
+        * If an invalid ISBN number is entered, bookJsonString will
+        * be null.
+        */
+        if (bookJsonString == null)  {
+
+            Intent messageIntent = new Intent(MainActivity.MESSAGE_EVENT);
+            messageIntent.putExtra(MainActivity.MESSAGE_KEY,getResources().getString(R.string.not_found));
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(messageIntent);
+
+            return;
         }
 
         final String ITEMS = "items";
@@ -229,5 +265,16 @@ public class BookService extends IntentService {
             getContentResolver().insert(AlexandriaContract.CategoryEntry.CONTENT_URI, values);
             values= new ContentValues();
         }
+    }
+
+    /*
+    * Returns true if the network is available
+    */
+    static public boolean isNetworkAvailable(Context context)  {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return (networkInfo != null) && (networkInfo.isConnected());
     }
  }
