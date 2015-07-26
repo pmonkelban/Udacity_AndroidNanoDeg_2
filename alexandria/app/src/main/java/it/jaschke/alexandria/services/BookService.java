@@ -71,7 +71,12 @@ public class BookService extends IntentService {
          */
         if((ean!=null) && !TextUtils.isEmpty(ean)) {
             getContentResolver().delete(AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)), null, null);
+
+            Intent intent = new Intent(MainActivity.MESSAGE_EVENT);
+            intent.putExtra(MainActivity.MESSAGE_KEY, getResources().getString(R.string.deleted));
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         }
+
     }
 
     /**

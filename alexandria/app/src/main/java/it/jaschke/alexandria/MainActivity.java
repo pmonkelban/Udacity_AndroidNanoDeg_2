@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,18 +30,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
      */
     private NavigationDrawerFragment navigationDrawerFragment;
 
-    private int mBookFragmentId;
-
-
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence title;
     public static boolean IS_TABLET = false;
-    private BroadcastReceiver messageReciever;
+    private BroadcastReceiver mBroadcastReceiver;
 
     public static final String MESSAGE_EVENT = "MESSAGE_EVENT";
     public static final String MESSAGE_KEY = "MESSAGE_EXTRA";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
             setContentView(R.layout.activity_main);
         }
 
-        messageReciever = new MessageReciever();
-        IntentFilter filter = new IntentFilter(MESSAGE_EVENT);
-        LocalBroadcastManager.getInstance(this).registerReceiver(messageReciever,filter);
+        mBroadcastReceiver = new MessageReceiver();
 
         navigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -64,10 +61,20 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         navigationDrawerFragment.setUp(R.id.navigation_drawer,
                     (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        mBookFragmentId = R.id.container;
-        if(findViewById(R.id.right_container) != null){
-            mBookFragmentId = R.id.right_container;
-        }
+
+    }
+
+    @Override
+    protected void onResume()  {
+        super.onResume();
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mBroadcastReceiver, new IntentFilter(MESSAGE_EVENT));
+    }
+
+    @Override
+    protected void onPause()  {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
+        super.onPause();
     }
 
     @Override
@@ -143,7 +150,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     @Override
     protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(messageReciever);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
         super.onDestroy();
     }
 
@@ -160,15 +167,21 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
 //        Log.d(TAG, "Add to BackStack. Book Detail");
 
+
+        int detailsFragmentId = R.id.container;
+        if(findViewById(R.id.right_container) != null)  {
+            detailsFragmentId = R.id.right_container;
+        }
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction = transaction.replace(mBookFragmentId, fragment);
+        transaction = transaction.replace(detailsFragmentId, fragment);
 
         /*
         * If we're in tablet mode, then we show the book details in the right panel.
         * Otherwise, we'll open a new page to show the book's detail, and we'll
         * add the current page to the back stack.
         */
-        if (!IS_TABLET)  {
+        if (detailsFragmentId == R.id.container)  {
 
             // Clear the back stack
             getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -180,15 +193,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     }
 
-    private class MessageReciever extends BroadcastReceiver {
+    private class MessageReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
+
             if(intent.getStringExtra(MESSAGE_KEY)!=null){
                 Toast.makeText(MainActivity.this, intent.getStringExtra(MESSAGE_KEY), Toast.LENGTH_LONG).show();
             }
         }
     }
 
+    /*
+    * Fixed various navigation issues, making this method obsolete.
+    */
 //    public void goBack(View view){
 //
 //        Log.d(TAG, "goBack()");
@@ -197,11 +214,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 //    }
 
     private boolean isTablet() {
-//        return (getApplicationContext().getResources().getConfiguration().screenLayout
-//                & Configuration.SCREENLAYOUT_SIZE_MASK)
-//                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
-
-        return true;
+        return (getApplicationContext().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override

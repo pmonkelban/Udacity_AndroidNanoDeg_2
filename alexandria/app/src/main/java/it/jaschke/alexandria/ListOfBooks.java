@@ -1,7 +1,10 @@
 package it.jaschke.alexandria;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -9,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +29,8 @@ import it.jaschke.alexandria.data.AlexandriaContract;
 
 public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String TAG = ListOfBooks.class.getSimpleName();
+
     private BookListAdapter bookListAdapter;
     private ListView bookList;
     private int position = ListView.INVALID_POSITION;
@@ -31,12 +38,17 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
 
     private final int LOADER_ID = 10;
 
+    private BroadcastReceiver mBroadcastReceiver;
+
+
     public ListOfBooks() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mBroadcastReceiver = new MessageReceiver();
     }
 
     @Override
@@ -84,6 +96,19 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume()  {
+        super.onResume();
+        LocalBroadcastManager.getInstance(getActivity())
+                .registerReceiver(mBroadcastReceiver, new IntentFilter(MainActivity.MESSAGE_EVENT));
+    }
+
+    @Override
+    public void onPause()  {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mBroadcastReceiver);
+        super.onPause();
     }
 
     private void restartLoader() {
@@ -144,6 +169,25 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
                         (Context.INPUT_METHOD_SERVICE);
         mgr.hideSoftInputFromWindow(windowToken,
                 0);
+    }
+
+    private class MessageReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if(intent.getStringExtra(MainActivity.MESSAGE_KEY)!=null){
+
+                Log.d(TAG, "deleted:" + getString(R.string.deleted) + " / " + "msg:" + intent.getStringExtra(MainActivity.MESSAGE_KEY));
+
+                // If  a book was deleted.  Updated the list.
+                if (getString(R.string.deleted).equals(
+                        intent.getStringExtra(MainActivity.MESSAGE_KEY)))  {
+
+                    Log.d(TAG, "Updating bookListAdapter");
+                    restartLoader();
+                }
+            }
+        }
     }
 
 }
