@@ -34,7 +34,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="barqsoft.footballscores.MainActivity" />
         </activity>
+
         <service android:name=".service.myFetchService" />
+        <service android:name=".widget.ScoresWidgetIntentService" />
+        <service android:name=".widget.ScoresRemoteViewService" />
 
         <!-- Football Scores Widget -->
         <receiver
@@ -42,6 +45,7 @@
             android:label="@string/widget_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="barqsoft.footballscores.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

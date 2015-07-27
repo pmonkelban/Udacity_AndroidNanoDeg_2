@@ -1,33 +1,34 @@
 package barqsoft.footballscores.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.RemoteViews;
+import android.util.Log;
 
-import barqsoft.footballscores.MainActivity;
-import barqsoft.footballscores.R;
+import barqsoft.footballscores.service.myFetchService;
 
 public class ScoresWidgetProvider extends AppWidgetProvider {
+
+    private static final String TAG = ScoresWidgetProvider.class.getSimpleName();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {
 
-        for (int appWidgetId : appWidgetIds) {
+        Log.d(TAG, "onUpdate() called");
+        context.startService(new Intent(context, ScoresWidgetIntentService.class));
+    }
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_main);
+    @Override
+    public void onReceive(Context context, Intent intent)  {
 
-            Intent launchIntent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-            views.setOnClickPendingIntent(R.id.widgetLayoutMain, pendingIntent);
+        Log.d(TAG, "onReceive() called");
+        super.onReceive(context, intent);
 
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-
+        if (myFetchService.ACTION_DATA_UPDATED.equals(intent.getAction()))  {
+            context.startService(new Intent(context, ScoresWidgetIntentService.class));
         }
 
-        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 }

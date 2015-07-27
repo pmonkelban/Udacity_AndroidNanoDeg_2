@@ -30,6 +30,7 @@ import barqsoft.footballscores.R;
  */
 public class myFetchService extends IntentService {
     public static final String LOG_TAG = "myFetchService";
+    public static final String ACTION_DATA_UPDATED = "barqsoft.footballscores.ACTION_DATA_UPDATED";
 
     public myFetchService() {
         super("myFetchService");
@@ -119,6 +120,14 @@ public class myFetchService extends IntentService {
 //                //Could not Connect
 //                Log.d(LOG_TAG, "Could not connect to server.");
 //            }
+
+            /*
+            * Send Broadcast notifying listeners that the data has changed.
+            */
+            Log.d(LOG_TAG, "Sending data updated broadcast");
+            Intent intent = new Intent();
+            intent.setAction(ACTION_DATA_UPDATED);
+            sendBroadcast(intent);
 
         } catch (Exception e) {
             Log.e(LOG_TAG, e.getMessage());

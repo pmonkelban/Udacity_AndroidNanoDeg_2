@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    android:id="@+id/widget_item_container">
-
+<RelativeLayout android:id="@+id/widget_item_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
     <TextView
+        android:id="@+id/widget_home_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/widget_home_team"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/orange01"
-        android:contentDescription="@string/home_team_name"
-        android:layout_margin="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/widget_final_score"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/match_score_desc"
         android:layout_margin="10dp"
+        android:contentDescription="@string/home_team_name"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/orange01"/>
 
     <TextView
+        android:id="@+id/widget_final_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/widget_away_team"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:textColor="@color/orange01"
-        android:contentDescription="@string/away_team_name"/>
+        android:contentDescription="@string/match_score_desc"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/orange01"/>
 
     <TextView
+        android:id="@+id/widget_away_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="10dp"
+        android:contentDescription="@string/away_team_name"
         android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/orange01"/>
+
+    <TextView
         android:id="@+id/widget_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/widget_home_team"
         android:layout_centerHorizontal="true"
         android:layout_margin="10dp"
-        android:textColor="@color/orange01"
-        android:contentDescription="@string/match_time_desc"/>
+        android:contentDescription="@string/match_time_desc"
+        android:text="Small Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/orange01"/>
 
 </RelativeLayout>

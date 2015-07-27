@@ -3,5 +3,5 @@
     android:initialLayout="@layout/widget_main"
     android:minHeight="@dimen/widget_min_height"
     android:minWidth="@dimen/widget_min_width"
-    android:updatePeriodMillis="3600000">  <!-- 1 Hour -->
+    android:updatePeriodMillis="180000">  <!-- 30 Minutes (the minimum) -->
 </appwidget-provider>

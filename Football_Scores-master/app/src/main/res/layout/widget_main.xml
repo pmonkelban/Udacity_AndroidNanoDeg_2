@@ -46,14 +46,6 @@
                     android:contentDescription="@string/widget_title_desc"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/txvWidgetTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/widget_subtitle"
-                    android:contentDescription="@string/widget_subtitle_desc"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/orange01"/>
             </LinearLayout>
 
         </LinearLayout>
