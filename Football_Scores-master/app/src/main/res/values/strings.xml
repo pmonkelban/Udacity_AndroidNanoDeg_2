@@ -39,13 +39,24 @@
     <string name="league">League</string>
     <string name="match_day">Match Day</string>
     <string name="scores_list">List of Scores</string>
-    <string name="home_team_crest">Home Team's Crest</string>
-    <string name="home_team_name">Home Team's Name</string>
+    <string name="home_team_crest">Home Team\'s Crest</string>
+    <string name="home_team_name">Home Team\'s Name</string>
     <string name="score">Score</string>
     <string name="game_data">Game Data</string>
-    <string name="away_team_crest">Away Team's Crest</string>
-    <string name="away_team_name">Away Team's Name</string>
-    
+    <string name="away_team_crest">Away Team\'s Crest</string>
+    <string name="away_team_name">Away Team\'s Name</string>
+
+    <!-- Widget Strings -->
+    <string name="widget_name">Football Scores Widget</string>
+    <string name="widget_subtitle">Current Score</string>
+    <string name="widget_subtitle_desc">Current Score Title</string>
+    <string name="widget_imageview_desc">Footbal Widget Icon</string>
+    <string name="widget_title_desc">Footbal Score app title</string>
+    <string name="widget_listview_desc">Football Team List and Scores</string>
+    <string name="match_score_desc"> Match Score</string>
+    <string name="match_time_desc">Time</string>
+
+
     <string name="about_text">
         This Application gets Football Matches Score for the Premier League,Seria A,Bundesliga,Primera Division
         and the Uefa Champions League.
