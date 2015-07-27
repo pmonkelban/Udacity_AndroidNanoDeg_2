@@ -36,8 +36,12 @@
         </activity>
 
         <service android:name=".service.myFetchService" />
-        <service android:name=".widget.ScoresWidgetIntentService" />
-        <service android:name=".widget.ScoresRemoteViewService" />
+
+        <service android:name=".widget.ScoresWidgetIntentService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <service android:name=".widget.ScoresRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
 
         <!-- Football Scores Widget -->
         <receiver

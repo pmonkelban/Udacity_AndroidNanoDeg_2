@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import barqsoft.footballscores.MainActivity;
@@ -13,12 +14,16 @@ import barqsoft.footballscores.R;
 
 public class ScoresWidgetIntentService extends IntentService {
 
+    public static final String TAG = ScoresWidgetIntentService.class.getCanonicalName();
+
     public ScoresWidgetIntentService() {
         super("ScoresWidgetIntentService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        Log.d(TAG, "in onHandleIntnet()");
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
@@ -34,7 +39,7 @@ public class ScoresWidgetIntentService extends IntentService {
                     R.layout.widget_main);
 
             Intent listViewIntent = new Intent(getApplicationContext(),
-                    ScoresRemoteViewService.class);
+                    ScoresRemoteViewsService.class);
 
             listViewIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             listViewIntent.setData(Uri.parse(listViewIntent.toUri(Intent.URI_INTENT_SCHEME)));
@@ -47,8 +52,12 @@ public class ScoresWidgetIntentService extends IntentService {
 
             views.setOnClickPendingIntent(R.id.widgetLayoutMain, pendingIntent);
 
+            Log.d(TAG, "Before appWidgetManager");
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
+
+            Log.d(TAG, "After appWidgetManager");
+
 
         }
     }

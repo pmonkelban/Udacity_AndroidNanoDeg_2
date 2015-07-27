@@ -12,9 +12,9 @@ import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.Utilies;
 
-public class ScoresRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
+public class ScoresRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
-    private final String TAG = ScoresRemoteViewFactory.class.getSimpleName();
+    private final String TAG = ScoresRemoteViewsFactory.class.getCanonicalName();
 
     private int appWidgetId;
 
@@ -27,10 +27,15 @@ public class ScoresRemoteViewFactory implements RemoteViewsService.RemoteViewsFa
     public static final int IDX_HOME_TEAM_SCORE = 6;
     public static final int IDX_AWAY_TEAM_SCORE = 7;
 
-    public ScoresRemoteViewFactory(Context context, Intent intent) {
+    public ScoresRemoteViewsFactory(Context context, Intent intent) {
+
+        Log.d(TAG, "ScoresRemoteViewsFactory being created");
+
         this.mContext = context;
+
         appWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
+
         Log.d(TAG,  "" + appWidgetId);
     }
 

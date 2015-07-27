@@ -10,7 +10,7 @@ import barqsoft.footballscores.service.myFetchService;
 
 public class ScoresWidgetProvider extends AppWidgetProvider {
 
-    private static final String TAG = ScoresWidgetProvider.class.getSimpleName();
+    private static final String TAG = ScoresWidgetProvider.class.getCanonicalName();
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager,
