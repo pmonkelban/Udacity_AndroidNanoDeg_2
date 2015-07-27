@@ -16,6 +16,7 @@
 
     <ListView
         android:id="@+id/scores_list"
+        android:contentDescription="@string/scores_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@android:color/transparent"

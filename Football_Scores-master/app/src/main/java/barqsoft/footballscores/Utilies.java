@@ -1,5 +1,8 @@
 package barqsoft.footballscores;
 
+import android.content.Context;
+import android.content.res.Resources;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -10,66 +13,87 @@ public class Utilies
     public static final int CHAMPIONS_LEAGUE = 362;
     public static final int PRIMERA_DIVISION = 358;
     public static final int BUNDESLIGA = 351;
-    public static String getLeague(int league_num)
+    public static String getLeague(int league_num, Context context)
     {
+
+        Resources resources = context.getResources();
+
         switch (league_num)
         {
-            case SERIE_A : return "Seria A";
-            case PREMIER_LEGAUE : return "Premier League";
-            case CHAMPIONS_LEAGUE : return "UEFA Champions League";
-            case PRIMERA_DIVISION : return "Primera Division";
-            case BUNDESLIGA : return "Bundesliga";
-            default: return "Not known League Please report";
+            case SERIE_A : return resources.getString(R.string.seriaa);
+            case PREMIER_LEGAUE : return resources.getString(R.string.premierleague);
+            case CHAMPIONS_LEAGUE : return resources.getString(R.string.champions_league);
+            case PRIMERA_DIVISION : return resources.getString(R.string.primeradivison);
+            case BUNDESLIGA : return resources.getString(R.string.bundesliga);
+            default: return resources.getString(R.string.unknown_league);
         }
     }
-    public static String getMatchDay(int match_day,int league_num)
+    public static String getMatchDay(int match_day,int league_num, Context context)
     {
+
+        Resources resources = context.getResources();
+
         if(league_num == CHAMPIONS_LEAGUE)
         {
             if (match_day <= 6)
             {
-                return "Group Stages, Matchday : 6";
+                return resources.getString(R.string.group_stages_matchday, 6);
             }
             else if(match_day == 7 || match_day == 8)
             {
-                return "First Knockout round";
+                return resources.getString(R.string.first_knockout_round);
             }
             else if(match_day == 9 || match_day == 10)
             {
-                return "QuarterFinal";
+                return resources.getString(R.string.quarter_final);
             }
             else if(match_day == 11 || match_day == 12)
             {
-                return "SemiFinal";
+                return resources.getString(R.string.semi_final);
             }
             else
             {
-                return "Final";
+                return resources.getString(R.string.final_text);
             }
         }
         else
         {
-            return "Matchday : " + String.valueOf(match_day);
+            return resources.getString(R.string.group_stages_matchday, match_day);
         }
     }
 
-    public static String getScores(int home_goals,int awaygoals)
+    public static String getScores(int home_goals,int awaygoals, Context context)
     {
+
+        Resources resources = context.getResources();
+
         if(home_goals < 0 || awaygoals < 0)
         {
-            return " - ";
+            return resources.getString(R.string.dash_separator);
         }
         else
         {
-            return String.valueOf(home_goals) + " - " + String.valueOf(awaygoals);
+            return String.valueOf(home_goals) +
+                    resources.getString(R.string.dash_separator) +
+                    String.valueOf(awaygoals);
         }
     }
 
     public static int getTeamCrestByTeamName (String teamname)
     {
+
         if (teamname==null){return R.drawable.no_icon;}
         switch (teamname)
         {
+
+            /*
+            * These strings are never displayed to the user.  They're just
+            * keys so that we can look up the correct team logo.  Therefore,
+            * I'm not moving them into strings.xml.
+            * To move them into strings.xml would require that a Context be
+            * passed in and the entire switch block would need to be re-written
+            * because constant values are required for the case statements.
+            */
             case "Arsenal London FC" : return R.drawable.arsenal;
             case "Manchester United FC" : return R.drawable.manchester_united;
             case "Swansea City" : return R.drawable.swansea_city_afc;
@@ -80,6 +104,7 @@ public class Utilies
             case "West Bromwich Albion" : return R.drawable.west_bromwich_albion_hd_logo;
             case "Sunderland AFC" : return R.drawable.sunderland;
             case "Stoke City FC" : return R.drawable.stoke_city;
+
             default: return R.drawable.no_icon;
         }
     }

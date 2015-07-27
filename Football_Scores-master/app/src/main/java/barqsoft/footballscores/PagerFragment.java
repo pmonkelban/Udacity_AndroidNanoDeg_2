@@ -87,6 +87,12 @@ public class PagerFragment extends Fragment
                 Time time = new Time();
                 time.setToNow();
                 // Otherwise, the format is just the day of the week (e.g "Wednesday".
+
+                /*
+                * This should provide the date in the user's selected language
+                * (i.e. Miércoles 4 de Abril de 2012 if spanish).  So no need
+                * to pull these from strings.xml.
+                */
                 SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
                 return dayFormat.format(dateInMillis);
             }
