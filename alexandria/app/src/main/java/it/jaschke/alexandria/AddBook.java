@@ -144,7 +144,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
         if (requestCode == 0)  {
             if ((resultCode == Activity.RESULT_CANCELED) || (resultCode == -1000))  {
-                Toast.makeText(getActivity(), "Nothing Captured", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), getString(R.string.nothing_captured), Toast.LENGTH_SHORT).show();
             } else  {
 
                 Bundle bundle = data.getExtras();

@@ -53,7 +53,7 @@
     <string name="widget_imageview_desc">Football Widget Icon</string>
     <string name="widget_title_desc">Football Score app title</string>
     <string name="widget_listview_desc">Football Team List and Scores</string>
-    <string name="match_score_desc"> Match Score</string>
+    <string name="match_score_desc">Match Score</string>
     <string name="match_time_desc">Time</string>
     <string name="no_scores_available">No Scores Available</string>
 
