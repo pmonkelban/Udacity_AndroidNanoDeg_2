@@ -3,20 +3,20 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="4dp"
-    android:background="@drawable/list_item"
-    >
+    android:background="@drawable/list_item">
+
     <LinearLayout
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        >
+        android:paddingTop="5dp">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:contentDescription="@string/home_team_crest"
+                android:contentDescription="@string/home_team_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -26,11 +26,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textSize="@dimen/TeamNames"
+                android:textSize="@dimen/team_name_text_size"
                 android:gravity="center"
-                android:text="@string/test_text"
                 android:id="@+id/home_name"/>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -41,29 +41,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/test_text"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:textSize="@dimen/Score"
+                android:textSize="@dimen/score_text_size"
                 android:id="@+id/score_textview"/>
             <TextView
                 android:contentDescription="@string/game_data"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="@string/test_text"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:id="@+id/data_textview"/>
-
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
             <ImageView
-                android:contentDescription="@string/away_team_crest"
+                android:contentDescription="@string/away_team_logo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -74,16 +72,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/test_text"
-                android:textSize="@dimen/TeamNames"
+                android:textSize="@dimen/team_name_text_size"
                 android:id="@+id/away_name"/>
         </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/details_fragment_container">
     </FrameLayout>
+
 </LinearLayout>
 
 

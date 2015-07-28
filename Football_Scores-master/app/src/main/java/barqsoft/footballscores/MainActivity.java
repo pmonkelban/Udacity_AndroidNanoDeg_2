@@ -9,10 +9,15 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity
 {
+    private static final String TAG = MainActivity.class.getCanonicalName();
+
+    public static final String SELECTED_MATCH_ID = "selected_match_id";
+
     public static int selected_match_id;
     public static int current_fragment = 2;
     private final String save_tag = "Save Test";
     private PagerFragment my_main;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +28,18 @@ public class MainActivity extends ActionBarActivity
                     .add(R.id.container, my_main)
                     .commit();
         }
+
+        Intent intent = getIntent();
+        if ((intent != null) && (intent.getStringExtra(SELECTED_MATCH_ID) != null))  {
+            selected_match_id = Integer.parseInt(intent.getStringExtra(SELECTED_MATCH_ID));
+
+            Log.d(TAG, "Match " + selected_match_id + " selected.");
+
+            /*
+            * It'd be nice to be able to scroll to the selected match.
+            */
+        }
+
     }
 
 
@@ -66,7 +83,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
-        Log.v(save_tag,"will retrive");
+        Log.v(save_tag,"will retrieve");
         Log.v(save_tag,"fragment: "+String.valueOf(savedInstanceState.getInt("Pager_Current")));
         Log.v(save_tag,"selected id: "+savedInstanceState.getInt("Selected_match"));
         current_fragment = savedInstanceState.getInt("Pager_Current");
