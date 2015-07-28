@@ -1,4 +1,5 @@
 *** Extra error cases are found, accounted for, and called out in code comments.
+- Alexandria:
 
 1. Fixed Navigation issues.  The app, as provided, had many navigation quirks.  The back buttons did not work correctly.  In some cases, content
 from two fragments would appear on top of each other, etc.  Fixed so that the List of Books, Scan Book, and About pages are all "Top Level".  Pressing the back button from any one of these closes the app.  On non-tablets, the book details page opens in it's own page.  Pressing the back button from here returns to the List of Books page.  This make Navigation much cleaner. 
