@@ -24,7 +24,8 @@
 
         <provider
             android:name=".ScoresProvider"
-            android:authorities="barqsoft.footballscores" />
+            android:authorities="barqsoft.footballscores"
+            android:exported="true"/>
 
         <activity
             android:name=".AboutActivity"
@@ -37,24 +38,24 @@
 
         <service android:name=".service.myFetchService" />
 
-        <service android:name=".widget.ScoresWidgetIntentService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-
-        <service android:name=".widget.ScoresRemoteViewsService"
-            android:permission="android.permission.BIND_REMOTEVIEWS" />
-
         <!-- Football Scores Widget -->
         <receiver
-            android:name=".widget.ScoresWidgetProvider"
-            android:label="@string/widget_name">
+            android:name=".widget.DetailWidgetProvider"
+            android:label="@string/widget_name"
+            android:enabled="@bool/widget_detail_enabled">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="barqsoft.footballscores.ACTION_DATA_UPDATED" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/scores_widget"/>
+                android:resource="@xml/widget_info_detail"/>
         </receiver>
+
+        <service android:name=".widget.DetailWidgetRemoteViewsService"
+                 android:exported="false"
+                 android:enabled="true"
+                 android:permission="android.permission.BIND_REMOTEVIEWS" />
 
     </application>
 

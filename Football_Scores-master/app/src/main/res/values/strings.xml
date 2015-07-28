@@ -55,6 +55,7 @@
     <string name="widget_listview_desc">Football Team List and Scores</string>
     <string name="match_score_desc"> Match Score</string>
     <string name="match_time_desc">Time</string>
+    <string name="no_scores_available">No Scores Available</string>
 
 
     <string name="about_text">

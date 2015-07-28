@@ -27,7 +27,7 @@ public class ScoresWidgetIntentService extends IntentService {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this,
-                ScoresWidgetProvider.class));
+                DetailWidgetProvider.class));
 
         for (int appWidgetId : appWidgetIds) {
 
@@ -36,21 +36,21 @@ public class ScoresWidgetIntentService extends IntentService {
             * http://stackoverflow.com/questions/14785446/how-to-set-custom-listadapter-to-list-view-in-appwidget
             */
             RemoteViews views = new RemoteViews(getApplicationContext().getPackageName(),
-                    R.layout.widget_main);
+                    R.layout.widget_detail);
 
             Intent listViewIntent = new Intent(getApplicationContext(),
-                    ScoresRemoteViewsService.class);
+                    DetailWidgetRemoteViewsService.class);
 
             listViewIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             listViewIntent.setData(Uri.parse(listViewIntent.toUri(Intent.URI_INTENT_SCHEME)));
-            views.setRemoteAdapter(R.id.widget_listview, listViewIntent);
+            views.setRemoteAdapter(R.id.widget_list, listViewIntent);
 
             Intent launchIntent = new Intent(getApplicationContext(), MainActivity.class);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(), 0, launchIntent, 0);
 
-            views.setOnClickPendingIntent(R.id.widgetLayoutMain, pendingIntent);
+            views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 
             Log.d(TAG, "Before appWidgetManager");
 
