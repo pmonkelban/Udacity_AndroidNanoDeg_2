@@ -8,6 +8,15 @@ from two fragments would appear on top of each other, etc.  Fixed so that the Li
 4. Fixed NullPointerException if the book does not have an author. (i.e. Reference books)
 5. Added Toast informing user when there is no network connectivity.
 6. Added Toast when an invalid ISBN number is entered.
+
+*** Open Issues
+
+Enter a valid ISBN number and wait for the book data to load.
+Then, add an extra digit to the end of the ISBN number.
+Next, Rotate the device.
+Result is that the Title of the book is shown, but no other data.  It should show the Title, subTitle, Author, Image, etc. of the last correcly loaded book.
+This bug was pointed out by a reviewer, but after spending several hours debugging, I'm still not sure why Title is displayed but nothing else.
+
  
 *** zxing integration notes.
 
